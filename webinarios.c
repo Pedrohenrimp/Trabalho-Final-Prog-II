@@ -65,6 +65,12 @@ struct webnarioLista *CriarwebnarioWebinario(int id, char titulo[], char url[], 
     webnario->hora = hora;
     webnario->minuto = minuto;
     webnario->posicao = webnario->anterior->posicao + 1;
+    webnario->quantidade_professores = qtdProfs;
+    int i;
+    for(i = 0; i < qtdProfs; i++)
+    {
+        webnario->matricula_professores[i] = matriculaProf[i];
+    }
     webnario->anterior = NULL;
     webnario->proximo = NULL;
     return webnario;
@@ -87,14 +93,14 @@ struct webnarioLista *BuscarWebnario(struct webnarioLista *lista, int id)
 bool InserirFinalWebnario(struct professorLista *lista_prof, struct webnarioLista *lista, int id, char titulo[], char url[], 
                             int dia, int mes, int ano, int hora, int minuto, int qtdProfs, int matriculaProf[])
 {
-    if(BuscarWebnario(lista, id) != NULL || sizeof(matriculaProf) / sizeof(matriculaProf[0]) == 0)
+    if(BuscarWebnario(lista, id) != NULL || qtdProfs == 0)
     {
         return false;
     }
     else
     {
         int i;
-        for(i = 0; i < sizeof(matriculaProf) / sizeof(matriculaProf[0]); i++)
+        for(i = 0; i < lista->quantidade_professores; i++)
         {
             if(BuscarProfessor(lista_prof, matriculaProf[i]) == NULL)
             {
@@ -128,7 +134,7 @@ bool IncluirProfessor(struct webnarioLista *lista_web, struct professorLista *li
     {
         return false;
     }
-    else if(sizeof(webnario->matricula_professores) / sizeof(webnario->matricula_professores[0]) == 3)
+    else if(webnario->quantidade_professores == 3)
     {
         return false;
     }
@@ -140,6 +146,7 @@ bool IncluirProfessor(struct webnarioLista *lista_web, struct professorLista *li
             if(webnario->matricula_professores[i] == '\0')
             {
                 webnario->matricula_professores[i] = matricula;
+                webnario->quantidade_professores ++;
                 return true;
             }
         }
@@ -161,7 +168,8 @@ bool RetirarProfessor(struct webnarioLista *lista_web, struct professorLista *li
             if(webnario->matricula_professores[i] == matricula)
             {
                 webnario->matricula_professores[i] = '\0';
-                if(sizeof(webnario->matricula_professores) / sizeof(webnario->matricula_professores[0]) == 0)
+                webnario->quantidade_professores --;
+                if(webnario->quantidade_professores == 0)
                 {
                     DesmarcarWebnario(lista_web, webnario);
                 }

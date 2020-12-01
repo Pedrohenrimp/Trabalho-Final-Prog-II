@@ -21,7 +21,7 @@ struct professorLista
 };
 
 struct professorLista *CriarListaProfessor();
-struct professorLista *CriarProfessor(int matricula, char nome[], char departamento[]);
+struct professorLista *CriarProfessor(struct professorLista *lista, int matricula, char nome[], char departamento[]);
 struct professorLista *BuscarProfessor(struct professorLista *lista, int matricula);
 bool InserirFinalProfessor(struct professorLista *lista, int matricula, char nome[], char departamento[]);
 struct professorLista *DestruirListaProfessor(struct professorLista *lista);
@@ -41,13 +41,13 @@ struct professorLista *CriarListaProfessor()
     return sentinela;
 }
 
-struct professorLista *CriarProfessor(int matricula, char nome[], char departamento[])
+struct professorLista *CriarProfessor(struct professorLista *lista, int matricula, char nome[], char departamento[])
 {
     struct professorLista *professor = (struct professorLista*) malloc(sizeof(struct professorLista));
     professor->matricula = matricula;
     strcpy(professor->nome, nome);
     strcpy(professor->departamento, departamento);
-    professor->posicao = professor->anterior->posicao + 1;
+    professor->posicao = lista->anterior->posicao + 1;
     professor->anterior = NULL;
     professor->proximo = NULL;
     return professor;
@@ -75,7 +75,7 @@ bool InserirFinalProfessor(struct professorLista *lista, int matricula, char nom
     }
     else
     {
-        struct professorLista *novo = CriarProfessor(matricula, nome, departamento);
+        struct professorLista *novo = CriarProfessor(lista, matricula, nome, departamento);
         novo->proximo = lista;
         novo->anterior = lista->anterior;
         lista->anterior->proximo = novo;
@@ -115,7 +115,7 @@ struct professorLista *CopiarArquivoProfessor(struct professorLista *lista, char
     for(i = 0; i < tamanho_arquivo / tamanho_dados; i++)
     {
         fread(&ponteiro[i], tamanho_dados, 1, arquivo);
-        struct professorLista *novo = CriarProfessor(ponteiro[i].matricula, ponteiro[i].nome, ponteiro[i].departamento);
+        struct professorLista *novo = CriarProfessor(lista, ponteiro[i].matricula, ponteiro[i].nome, ponteiro[i].departamento);
         novo->proximo = auxiliar;
         novo->anterior = auxiliar->anterior;
         auxiliar->anterior->proximo = novo;

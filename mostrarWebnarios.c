@@ -89,23 +89,34 @@ void QuickSort(struct webnarioVetor *vet, int prim, int ult)
 
 void MostrarWebnarios(struct webnarioVetor *vetor, struct professorLista *professores)
 {
-    int tamanho_vetor = sizeof(vetor) / (sizeof(vetor[0]));
+    int tamanho_vetor = sizeof(vetor) -1;
     QuickSort(vetor, 0, tamanho_vetor - 1);
+    printf("\n---------------------------------------\n");
     int i;
     for(i = 0; i < tamanho_vetor; i++)
     {
-        printf("Webnario %i:\n\n", i + 1);
+        printf("\nWebnario %i:\n\n", i + 1);
         printf("Titulo: %s\n", vetor[i].titulo);
-        printf("url: %s\n", vetor[i].url);
-        printf("Professores: ");
+        printf("url: http://%s/\n", vetor[i].url);
+
+        if(vetor[i].minuto < 10)
+        {
+            char minuto[2];
+            minuto[0] = '0';
+            minuto[1] = vetor[i].minuto + '0';
+            printf("Data: %d/%d/%d - %d:%c%c\n", vetor[i].dia, vetor[i].mes, vetor[i].ano, vetor[i].hora, minuto[0], minuto[1]);
+        }
+        else
+        {
+            printf("Data: %d/%d/%d - %d:%d\n", vetor[i].dia, vetor[i].mes, vetor[i].ano, vetor[i].hora, vetor[i].minuto);
+        }
+        printf("Professores: \n");
         int j;
         for(j = 0; j < vetor[i].qtdProfs; j++)
         {
             struct professorLista *professor = BuscarProfessor(professores, vetor[i].matriculaProf[j]);
-            printf("    %s\n", professor->nome);
+            printf("- %s\n", professor->nome);
         }
-        printf("Data: %d/%d/%d - %d:%d\n", vetor[i].dia, vetor[i].mes, vetor[i].ano, vetor[i].hora, vetor[i].minuto);
-        printf("\n\n");
-
+        printf("\n---------------------------------------\n");
     }
 }

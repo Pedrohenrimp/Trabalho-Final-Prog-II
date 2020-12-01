@@ -22,7 +22,8 @@ int main(void)
         printf("3. Alterar Webnario\n");
         printf("4. Encerrar Programa\n\n");
         scanf(" %d", &indice_menu);
-        if(indice_menu == 1)
+
+        if(indice_menu == 1)  //Cadastrar Professor.
         {
             char nome[40], departamento[20];
             int matricula;
@@ -35,14 +36,14 @@ int main(void)
             bool inserir = InserirFinalProfessor(lista_professores, matricula, nome, departamento);
             if(!inserir)
             {
-                printf("Professor ja cadastrado!\n");
+                printf("\nProfessor ja cadastrado!\n");
             }
             else
             {
-                printf("Professor cadastrado com sucesso!\n");
+                printf("\nProfessor cadastrado com sucesso!\n");
             }
         }
-        else if(indice_menu == 2)
+        else if(indice_menu == 2) //Cadastrar Webnario.
         {
             char titulo[40], url[20], matriculaProf[3];
             int id, dia, mes, ano, hora, minuto, qtdProfs;
@@ -79,25 +80,93 @@ int main(void)
             }
             if(!inserir)
             {
-                if(BuscarWebnario(lista_webnarios, id))
+                if(BuscarWebnario(lista_webnarios, id) != NULL)
                 {
-                    printf("Webnario já Cadastrado!\n");
+                    printf("\nWebnario já Cadastrado!\n");
                 }
                 else
                 {
-                    printf("O Webnario deve conter no minimo 1 professor e no maximo 3 professores cadastrados!\n");
+                    printf("\nO Webnario deve conter no minimo 1 professor e no maximo 3 professores cadastrados!\n");
                 }      
             }
             else
             {
-                printf("Webnario Cadastrado com Sucesso!\n");
+                printf("\nWebnario Cadastrado com Sucesso!\n");
             }
         }
-        else if(indice_menu == 3)
+        else if(indice_menu == 3)  //Alterar Webnario.
         {
+            int indice_alterar_webnario;
+            printf("\n-----  Alterar Webnario  -----\n\n");
+            printf("1. Incluir Professor a um Webnario\n");
+            printf("2. Retirar Professor de um Webnario\n");
+            printf("3. Voltar ao Menu Principal\n\n");
+
+            if(indice_alterar_webnario == 1)  //Incluir Professor a um Webnario.
+            {
+                int id, matricula;
+                printf("Digite a matricula do Professor que deseja Incluir:\n");
+                scanf(" %d", &matricula);
+                printf("Digite o ID do Webnario que deseja Incluir o Professor:\n");
+                scanf(" %d", &id);
+                if(BuscarWebnario(lista_webnarios, id) != NULL)
+                {
+                    if(BuscarProfessor(lista_professores, matricula) != NULL)
+                    {
+                        bool incluir = IncluirProfessor(lista_professores, lista_webnarios, BuscarWebnario(lista_webnarios, id), matricula);
+                        if(!incluir)
+                        {
+                            printf("O Webnario ja esta com o numero maximo de Professores Cadastrados!\n");
+                        }
+                    }
+                    else
+                    {
+                        printf("Matricula do Professor Invalida! Nao foi possivel Incluir Professor!\n");
+                    }
+                    
+                }
+                else
+                {
+                    printf("ID do Webnario Invalido! Nao foi possivel finalizar!\n");
+                }
+                
+            }
+            else if(indice_alterar_webnario == 2)  //Retirar Professor de um Webnario.
+            {
+                int id, matricula;
+                printf("Digite a matricula do Professor que deseja Retirar:\n");
+                scanf(" %d", &matricula);
+                printf("Digite o ID do Webnario que deseja Retirar o Professor:\n");
+                scanf(" %d", &id);
+                if(BuscarWebnario(lista_webnarios, id) != NULL)
+                {
+                    if(BuscarProfessor(lista_professores, matricula) != NULL)
+                    {
+                        bool retirar = RetirarProfessor(lista_professores, lista_webnarios, BuscarWebnario(lista_webnarios, id), matricula);
+                        if(!retirar)
+                        {
+                            printf("O Webnario ja esta com o numero maximo de Professores Cadastrados!\n");
+                        }
+                    }
+                    else
+                    {
+                        printf("Matricula do Professor Invalida! Nao foi possivel Incluir Professor!\n");
+                    }
+                    
+                }
+                else
+                {
+                    printf("ID do Webnario Invalido! Nao foi possivel finalizar!\n");
+                }   
+            }
+            else if(indice_alterar_webnario == 3)  //Voltar ao Menu Principal.
+            {
+                continue;
+            }
+
 
         }
-        else if(indice_menu == 4)
+        else if(indice_menu == 4)  //Encerrar Programa.
         {
             break;
         }

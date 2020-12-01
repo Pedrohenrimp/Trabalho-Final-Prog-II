@@ -19,7 +19,7 @@ struct webnarioVetor *VetorWebnarios(struct webnarioLista *lista)
 {
     int tamanho_lista = lista->anterior->posicao + 1;
     struct webnarioLista *auxiliar = lista->proximo;
-    struct webnarioVetor *ponteiro = (int *) malloc(sizeof(struct webnarioVetor) * tamanho_lista);
+    struct webnarioVetor *ponteiro = (struct webnarioVetor *) malloc(sizeof(struct webnarioVetor) * tamanho_lista);
     int i;
     for(i = 0; i < tamanho_lista; i++)
     {
@@ -34,7 +34,7 @@ struct webnarioVetor *VetorWebnarios(struct webnarioLista *lista)
         ponteiro[i].qtdProfs = auxiliar->quantidade_professores;
         ponteiro[i].matriculaProf[3] = auxiliar->matricula_professores;
 
-        struct tm *data;
+        struct tm *data = (struct tm*)malloc(sizeof(struct tm));
         data->tm_min = ponteiro[i].minuto;
         data->tm_hour = ponteiro[i].hora;
         data->tm_mday = ponteiro[i].dia;
@@ -43,6 +43,7 @@ struct webnarioVetor *VetorWebnarios(struct webnarioLista *lista)
         time_t time = mktime(data);
 
         ponteiro[i].tempo = (int)time;
+        free(data);
 
         auxiliar = auxiliar->proximo;
     }

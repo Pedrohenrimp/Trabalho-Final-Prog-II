@@ -20,11 +20,12 @@ struct professorLista
 };
 
 struct professorLista *CriarListaProfessor();
-struct professorLista *CriarprofessorProfessor(int matricula, char nome[], char departamento[]);
+struct professorLista *CriarProfessor(int matricula, char nome[], char departamento[]);
 struct professorLista *BuscarProfessor(struct professorLista *lista, int matricula);
 struct professorLista *DestruirListaProfessor(struct professorLista *lista);
 
 struct professorLista *CopiarArquivoProfessor(struct professorLista *lista, char nome_arquivo[]);
+void AtualizarArquivoProfessor(struct professorLista *lista, char nome_arquivo[]);
 
 
 
@@ -38,7 +39,7 @@ struct professorLista *CriarListaProfessor()
     return sentinela;
 }
 
-struct professorLista *CriarprofessorProfessor(int matricula, char nome[], char departamento[])
+struct professorLista *CriarProfessor(int matricula, char nome[], char departamento[])
 {
     struct professorLista *professor = (struct professorLista*) malloc(sizeof(struct professorLista));
     professor->matricula = matricula;
@@ -72,7 +73,7 @@ bool InserirFinalProfessor(struct professorLista *lista, int matricula, char nom
     }
     else
     {
-        struct professorLista *novo = CriarprofessorProfessor(matricula, nome, departamento);
+        struct professorLista *novo = CriarProfessor(matricula, nome, departamento);
         novo->proximo = lista;
         novo->anterior = lista->anterior;
         lista->anterior->proximo = novo;
@@ -119,7 +120,7 @@ struct professorLista *CopiarArquivoProfessor(struct professorLista *lista, char
     for(i = 0; i < tamanho_arquivo / tamanho_dados; i++)
     {
         fread(&ponteiro[i], tamanho_dados, 1, arquivo);
-        struct professorLista *novo = Criarprofessor(ponteiro[i].matricula, ponteiro[i].nome, ponteiro[i].departamento);
+        struct professorLista *novo = CriarProfessor(ponteiro[i].matricula, ponteiro[i].nome, ponteiro[i].departamento);
         novo->proximo = auxiliar;
         novo->anterior = auxiliar->anterior;
         auxiliar->anterior->proximo = novo;
@@ -132,11 +133,11 @@ struct professorLista *CopiarArquivoProfessor(struct professorLista *lista, char
     return lista;
 }
 
-void AtualizarArquivo(struct professorLista *lista, char nome_arquivo[])
+void AtualizarArquivoProfessor(struct professorLista *lista, char nome_arquivo[])
 {
     int tamanho_lista = lista->anterior->posicao - 1;
     struct professorLista *auxiliar = lista->proximo;
-    struct professor *ponteiro = (int *) malloc(sizeof(struct professor) * tamanho_lista);
+    struct professor *ponteiro = (struct professor *) malloc(sizeof(struct professor) * tamanho_lista);
     int i;
     for(i = 0; i < tamanho_lista; i++)
     {

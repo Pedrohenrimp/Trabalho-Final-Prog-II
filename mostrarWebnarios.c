@@ -16,6 +16,10 @@ struct webnarioVetor
     int tempo;
 };
 
+struct webnarioVetor *VetorWebnarios(struct webnarioLista *lista);
+void QuickSort(struct webnarioVetor *vet, int prim, int ult);
+void MostrarWebnarios(struct webnarioVetor *vetor, struct professorLista *professores);
+
 struct webnarioVetor *VetorWebnarios(struct webnarioLista *lista)
 {
     int tamanho_lista = lista->anterior->posicao + 1;

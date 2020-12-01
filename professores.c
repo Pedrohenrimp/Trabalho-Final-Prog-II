@@ -9,7 +9,7 @@
 struct professor
 {
     int matricula; //identificador do professor
-    char nome[40],departamento[20];
+    char nome[40], departamento[20];
 };
 
 struct professorLista
@@ -23,6 +23,7 @@ struct professorLista
 struct professorLista *CriarListaProfessor();
 struct professorLista *CriarProfessor(int matricula, char nome[], char departamento[]);
 struct professorLista *BuscarProfessor(struct professorLista *lista, int matricula);
+bool InserirFinalProfessor(struct professorLista *lista, int matricula, char nome[], char departamento[]);
 struct professorLista *DestruirListaProfessor(struct professorLista *lista);
 
 struct professorLista *CopiarArquivoProfessor(struct professorLista *lista, char nome_arquivo[]);
@@ -83,7 +84,6 @@ bool InserirFinalProfessor(struct professorLista *lista, int matricula, char nom
     return true;
 }
 
-
 struct professorLista *DestruirListaProfessor(struct professorLista *lista)
 {
     struct professorLista *auxiliar = lista;
@@ -96,12 +96,6 @@ struct professorLista *DestruirListaProfessor(struct professorLista *lista)
     }
     return NULL;
 }
-
-
-
-
-
-
 
 struct professorLista *CopiarArquivoProfessor(struct professorLista *lista, char nome_arquivo[])
 {
@@ -136,7 +130,7 @@ struct professorLista *CopiarArquivoProfessor(struct professorLista *lista, char
 
 void AtualizarArquivoProfessor(struct professorLista *lista, char nome_arquivo[])
 {
-    int tamanho_lista = lista->anterior->posicao - 1;
+    int tamanho_lista = lista->anterior->posicao + 1;
     struct professorLista *auxiliar = lista->proximo;
     struct professor *ponteiro = (struct professor *) malloc(sizeof(struct professor) * tamanho_lista);
     int i;

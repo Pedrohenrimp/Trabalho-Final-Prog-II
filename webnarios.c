@@ -34,12 +34,13 @@ struct webnarioLista *CriarWebnario(int id, char titulo[], char url[], int dia, 
 struct webnarioLista *BuscarWebnario(struct webnarioLista *lista, int id);
 bool InserirFinalWebnario(struct professorLista *lista_prof, struct webnarioLista *lista, int id, char titulo[], char url[], 
                             int dia, int mes, int ano, int hora, int minuto, int qtdProfs, int matriculaProf[]);
+void DesmarcarWebnario(struct webnarioLista *lista_web, struct webnarioLista *webnario);
+bool IncluirProfessor(struct webnarioLista *lista_web, struct professorLista *lista_prof, struct webnarioLista *webnario, int matricula);
+bool RetirarProfessor(struct webnarioLista *lista_web, struct professorLista *lista_prof, struct webnarioLista *webnario, int matricula);
 struct webnarioLista *DestruirListaWebnario(struct webnarioLista *lista);
-
 
 struct webnarioLista *CopiarArquivoWebnario(struct webnarioLista *lista, char nome_arquivo[]);
 void AtualizarArquivoWebnarios(struct webnarioLista *lista, char nome_arquivo[]);
-
 
 
 
@@ -180,7 +181,6 @@ bool RetirarProfessor(struct webnarioLista *lista_web, struct professorLista *li
     }
     return false;
 }
-
 
 struct webnarioLista *DestruirListaWebnario(struct webnarioLista *lista)
 {

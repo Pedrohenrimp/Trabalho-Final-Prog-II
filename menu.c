@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include "professores.c"
-//#include "webnarios.c"
 #include "mostrarWebnarios.c"
 
 
@@ -17,4 +15,8 @@ int main(void)
 
     struct webnarioVetor *vetor_webnarios = VetorWebnarios(lista_webnarios);
     MostrarWebnarios(vetor_webnarios, lista_professores);
+
+    DestruirListaProfessor(lista_professores);
+    DestruirListaWebnario(lista_webnarios);
+    free(vetor_webnarios);
 }

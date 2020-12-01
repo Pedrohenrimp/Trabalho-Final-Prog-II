@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <malloc.h>
 #include <stdbool.h>
 
@@ -142,8 +143,8 @@ void AtualizarArquivoProfessor(struct professorLista *lista, char nome_arquivo[]
     for(i = 0; i < tamanho_lista; i++)
     {
         ponteiro[i].matricula = auxiliar->matricula;
-        ponteiro[i].nome[40] = auxiliar->nome;
-        ponteiro[i].departamento[20] = auxiliar->departamento;
+        strcpy(ponteiro[i].nome, auxiliar->nome);
+        strcpy(ponteiro[i].departamento, auxiliar->departamento);
 
         auxiliar = auxiliar->proximo;
     }

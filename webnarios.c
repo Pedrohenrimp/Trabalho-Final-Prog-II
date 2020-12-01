@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <malloc.h>
 #include <stdbool.h>
 
@@ -236,15 +237,19 @@ void AtualizarArquivoWebnario(struct webnarioLista *lista, char nome_arquivo[])
     for(i = 0; i < tamanho_lista; i++)
     {
         ponteiro[i].id = auxiliar->id;
-        ponteiro[i].titulo[40] = auxiliar->titulo;
-        ponteiro[i].url[20] = auxiliar->url;
+        strcpy(ponteiro[i].titulo, auxiliar->titulo);
+        strcpy(ponteiro[i].url, auxiliar->url);
         ponteiro[i].dia = auxiliar->dia;
         ponteiro[i].mes = auxiliar->mes;
         ponteiro[i].ano = auxiliar->ano;
         ponteiro[i].hora = auxiliar->hora;
         ponteiro[i].minuto = auxiliar->minuto;
         ponteiro[i].qtdProfs = auxiliar->quantidade_professores;
-        ponteiro[i].matriculaProf[3] = auxiliar->matricula_professores;
+        int j;
+        for(j = 0; j < auxiliar->quantidade_professores; j++)
+        {
+            ponteiro[i].matriculaProf[j] = auxiliar->matricula_professores[j];
+        }
 
         auxiliar = auxiliar->proximo;
     }

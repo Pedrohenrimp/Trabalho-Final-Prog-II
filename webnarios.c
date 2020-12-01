@@ -229,7 +229,7 @@ struct webnarioLista *CopiarArquivoWebnario(struct webnarioLista *lista, char no
 
 void AtualizarArquivo(struct webnarioLista *lista, char nome_arquivo[])
 {
-    int tamanho_lista = lista->anterior->posicao - 1;
+    int tamanho_lista = lista->anterior->posicao + 1;
     struct webnarioLista *auxiliar = lista->proximo;
     struct webnario *ponteiro = (int *) malloc(sizeof(struct webnario) * tamanho_lista);
     int i;

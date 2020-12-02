@@ -24,19 +24,19 @@ struct webnarioLista
     int dia, mes, ano, hora, minuto;
     int quantidade_professores;
     int matricula_professores[3];
-    int posicao;
     struct webnarioLista *anterior, *proximo;
 };
 
 struct webnarioLista *CriarListaWebnario();
-struct webnarioLista *CriarWebnario(struct webnarioLista *lista, int id, char titulo[], char url[], int dia, int mes, int ano,
+struct webnarioLista *CriarWebnario(int id, char titulo[], char url[], int dia, int mes, int ano,
                                                 int hora, int minuto, int qtdProfs, int matriculaProf[]);
 struct webnarioLista *BuscarWebnario(struct webnarioLista *lista, int id);
 bool InserirFinalWebnario(struct professorLista *lista_prof, struct webnarioLista *lista, int id, char titulo[], char url[], 
                             int dia, int mes, int ano, int hora, int minuto, int qtdProfs, int matriculaProf[]);
-void DesmarcarWebnario(struct webnarioLista *lista_web, struct webnarioLista *webnario);
+int TamanhoLista(struct webnarioLista *lista);
+void DesmarcarWebnario(struct webnarioLista *lista_web, int id);
 bool IncluirProfessor(struct webnarioLista *lista_web, struct professorLista *lista_prof, int id, int matricula);
-bool RetirarProfessor(struct webnarioLista *lista_web, struct professorLista *lista_prof, struct webnarioLista *webnario, int matricula);
+bool RetirarProfessor(struct webnarioLista *lista_web, struct professorLista *lista_prof, int id, int matricula);
 struct webnarioLista *DestruirListaWebnario(struct webnarioLista *lista);
 
 struct webnarioLista *CopiarArquivoWebnario(struct webnarioLista *lista, char nome_arquivo[]);
@@ -50,11 +50,10 @@ struct webnarioLista *CriarListaWebnario()
     struct webnarioLista *sentinela = (struct webnarioLista *) malloc(sizeof(struct webnarioLista));
     sentinela->proximo = sentinela;
     sentinela->anterior = sentinela;
-    sentinela->posicao = -1;
     return sentinela;
 }
 
-struct webnarioLista *CriarWebnario(struct webnarioLista *lista, int id, char titulo[], char url[], int dia, int mes, int ano,
+struct webnarioLista *CriarWebnario(int id, char titulo[], char url[], int dia, int mes, int ano,
                                                 int hora, int minuto, int qtdProfs, int matriculaProf[])
 {
     struct webnarioLista *webnario = (struct webnarioLista*) malloc(sizeof(struct webnarioLista));
@@ -66,7 +65,6 @@ struct webnarioLista *CriarWebnario(struct webnarioLista *lista, int id, char ti
     webnario->ano = ano;
     webnario->hora = hora;
     webnario->minuto = minuto;
-    webnario->posicao = lista->anterior->posicao + 1;
     webnario->quantidade_professores = qtdProfs;
     int i;
     for(i = 0; i < qtdProfs; i++)
@@ -110,7 +108,7 @@ bool InserirFinalWebnario(struct professorLista *lista_prof, struct webnarioList
             }
         }
         
-        struct webnarioLista *novo = CriarWebnario(lista, id, titulo, url, dia, mes, ano, hora, minuto, qtdProfs, matriculaProf);
+        struct webnarioLista *novo = CriarWebnario(id, titulo, url, dia, mes, ano, hora, minuto, qtdProfs, matriculaProf);
         novo->proximo = lista;
         novo->anterior = lista->anterior;
         lista->anterior->proximo = novo;
@@ -119,9 +117,21 @@ bool InserirFinalWebnario(struct professorLista *lista_prof, struct webnarioList
     return true;
 }
 
-void DesmarcarWebnario(struct webnarioLista *lista_web, struct webnarioLista *webnario)
+int TamanhoLista(struct webnarioLista *lista)
 {
-    struct webnarioLista *auxiliar = BuscarWebnario(lista_web, webnario->id);
+    int tamanho = 0;
+    struct webnarioLista *auxiliar = lista->proximo;
+    while(auxiliar != lista)
+    {
+        tamanho++;
+        auxiliar = auxiliar->proximo;
+    }
+    return tamanho;
+}
+
+void DesmarcarWebnario(struct webnarioLista *lista_web, int id)
+{
+    struct webnarioLista *auxiliar = BuscarWebnario(lista_web, id);
     if(auxiliar != NULL)
     {
         auxiliar->proximo->anterior = auxiliar->anterior;
@@ -150,8 +160,9 @@ bool IncluirProfessor(struct webnarioLista *lista_web, struct professorLista *li
     return false;
 }
 
-bool RetirarProfessor(struct webnarioLista *lista_web, struct professorLista *lista_prof, struct webnarioLista *webnario, int matricula)
+bool RetirarProfessor(struct webnarioLista *lista_web, struct professorLista *lista_prof, int id, int matricula)
 {
+    struct webnarioLista *webnario = BuscarWebnario(lista_web, id);
     if(BuscarProfessor(lista_prof, matricula) == NULL || BuscarWebnario(lista_web, webnario->id) == NULL)
     {
         return false;
@@ -167,7 +178,7 @@ bool RetirarProfessor(struct webnarioLista *lista_web, struct professorLista *li
                 webnario->quantidade_professores --;
                 if(webnario->quantidade_professores == 0)
                 {
-                    DesmarcarWebnario(lista_web, webnario);
+                    DesmarcarWebnario(lista_web, id);
                 }
                 return true;
             }
@@ -207,7 +218,7 @@ struct webnarioLista *CopiarArquivoWebnario(struct webnarioLista *lista, char no
     for(i = 0; i < tamanho_arquivo / tamanho_dados; i++)
     {
         fread(&ponteiro[i], tamanho_dados, 1, arquivo);
-        struct webnarioLista *novo = CriarWebnario(lista, ponteiro[i].id, ponteiro[i].titulo, ponteiro[i].url, ponteiro[i].dia,
+        struct webnarioLista *novo = CriarWebnario(ponteiro[i].id, ponteiro[i].titulo, ponteiro[i].url, ponteiro[i].dia,
                                                 ponteiro[i].mes, ponteiro[i].ano, ponteiro[i].hora, ponteiro[i].minuto,
                                                      ponteiro[i].qtdProfs, ponteiro[i].matriculaProf);
         novo->proximo = auxiliar;
@@ -224,7 +235,7 @@ struct webnarioLista *CopiarArquivoWebnario(struct webnarioLista *lista, char no
 
 void AtualizarArquivoWebnarios(struct webnarioLista *lista, char nome_arquivo[])
 {
-    int tamanho_lista = lista->anterior->posicao + 1;
+    int tamanho_lista = TamanhoLista(lista);
     struct webnarioLista *auxiliar = lista->proximo;
     struct webnario *ponteiro = (struct webnario *) malloc(sizeof(struct webnario) * tamanho_lista);
     int i;

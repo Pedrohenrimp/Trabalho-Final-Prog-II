@@ -18,11 +18,11 @@ struct webnarioVetor
 
 struct webnarioVetor *VetorWebnarios(struct webnarioLista *lista);
 void QuickSort(struct webnarioVetor *vet, int prim, int ult);
-void MostrarWebnarios(struct webnarioVetor *vetor, struct professorLista *professores);
+void MostrarWebnarios(struct webnarioVetor *vetor, struct professorLista *professores, int tamanho_vetor);
 
 struct webnarioVetor *VetorWebnarios(struct webnarioLista *lista)
 {
-    int tamanho_lista = lista->anterior->posicao + 1;
+    int tamanho_lista = TamanhoLista(lista);
     struct webnarioLista *auxiliar = lista->proximo;
     struct webnarioVetor *ponteiro = (struct webnarioVetor *) malloc(sizeof(struct webnarioVetor) * tamanho_lista);
     int i;
@@ -40,8 +40,8 @@ struct webnarioVetor *VetorWebnarios(struct webnarioLista *lista)
 
         int j;
         for(j = 0; j < auxiliar->quantidade_professores; j++)
-        {
-            ponteiro[i].matriculaProf[j] = auxiliar->matricula_professores[j];
+        {    
+            ponteiro[i].matriculaProf[j] = auxiliar->matricula_professores[j];    
         }
 
         struct tm *data = (struct tm*)malloc(sizeof(struct tm));
@@ -87,9 +87,8 @@ void QuickSort(struct webnarioVetor *vet, int prim, int ult)
 }
 
 
-void MostrarWebnarios(struct webnarioVetor *vetor, struct professorLista *professores)
+void MostrarWebnarios(struct webnarioVetor *vetor, struct professorLista *professores, int tamanho_vetor)
 {
-    int tamanho_vetor = sizeof(vetor);
     QuickSort(vetor, 0, tamanho_vetor - 1);
     printf("\n---------------------------------------\n");
     int i;

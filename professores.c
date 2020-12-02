@@ -27,7 +27,7 @@ bool InserirFinalProfessor(struct professorLista *lista, int matricula, char nom
 struct professorLista *DestruirListaProfessor(struct professorLista *lista);
 
 struct professorLista *CopiarArquivoProfessor(struct professorLista *lista, char nome_arquivo[]);
-void AtualizarArquivoProfessor(struct professorLista *lista, char nome_arquivo[]);
+void AtualizarArquivoProfessores(struct professorLista *lista, char nome_arquivo[]);
 
 
 
@@ -128,7 +128,7 @@ struct professorLista *CopiarArquivoProfessor(struct professorLista *lista, char
     return lista;
 }
 
-void AtualizarArquivoProfessor(struct professorLista *lista, char nome_arquivo[])
+void AtualizarArquivoProfessores(struct professorLista *lista, char nome_arquivo[])
 {
     int tamanho_lista = lista->anterior->posicao + 1;
     struct professorLista *auxiliar = lista->proximo;

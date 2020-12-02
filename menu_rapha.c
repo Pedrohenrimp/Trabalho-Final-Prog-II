@@ -23,7 +23,6 @@ char nome_arquivo_webnarios[] = "webnarios.bin";
 struct webnarioLista *lista_webnarios = CriarListaWebnario();
 lista_webnarios = CopiarArquivoWebnario(lista_webnarios, nome_arquivo_webnarios);
 
-struct webnarioVetor *vetor_webnarios = VetorWebnarios(lista_webnarios);
 
 char universidade[30];
 int opcao=0;
@@ -44,7 +43,7 @@ while (opcao!=6){
         printf("\n 6 - Encerrar programa.");
 
     printf("\n\n Digite sua opção: ");
-    scanf("%d", &opcao);
+    scanf(" %d", &opcao);
 
     switch(opcao){
 
@@ -54,11 +53,14 @@ while (opcao!=6){
         int matricula;
         printf("\n -- Cadastro professor -- \n");
         printf("\n Nome: ");
-        scanf("%s", nome);
+        scanf(" %s", nome);
+        fflush(stdin);
         printf("\n Matrícula: ");
-        scanf("%d", &matricula);
+        scanf(" %i", &matricula);
+        fflush(stdin);
         printf("\n Departamento: ");
-        scanf("%s", departamento);
+        scanf(" %s", departamento);
+        fflush(stdin);
         bool inserir = InserirFinalProfessor(lista_professores, matricula, nome, departamento);
             if(!inserir)
                 printf("Professor já cadastrado.");
@@ -75,28 +77,36 @@ while (opcao!=6){
 
         printf("\n -- Cadastro Webnário -- \n");
         printf("\n ID: ");
-        scanf("%d", &webnario.id);
+        scanf(" %d", &webnario.id);
+        fflush(stdin);
         printf("\n Título: ");
-        scanf("%s", &webnario.titulo);
+        scanf(" %s", &webnario.titulo);
+        fflush(stdin);
         printf("\n Url: ");
-        scanf("%s", &webnario.url);
+        scanf(" %s", &webnario.url);
+        fflush(stdin);
         printf("\n Ano: ");
-        scanf("%d", &webnario.ano);
+        scanf(" %d", &webnario.ano);
+        fflush(stdin);
         printf("\n Mês: ");
-        scanf("%d", &webnario.mes);
+        scanf(" %d", &webnario.mes);
+        fflush(stdin);
         printf("\n Dia (0-24): ");
-        scanf("%d", &webnario.dia);
+        scanf(" %d", &webnario.dia);
+        fflush(stdin);
         printf("\n Hora: ");
-        scanf("%d", &webnario.hora);
+        scanf(" %d", &webnario.hora);
+        fflush(stdin);
         printf("\n Minuto:");
-        scanf("%d", &webnario.minuto);
+        scanf(" %d", &webnario.minuto);
+        fflush(stdin);
         printf("\n Quantidade de professores participantes: ");
-        scanf("%d", &webnario.qtd_prof);
-
+        scanf(" %d", &webnario.qtd_prof);
+        fflush(stdin);
             if(webnario.qtd_prof <= 3 && webnario.qtd_prof > 0){
                 for (i=0; i < webnario.qtd_prof; i++){
                     printf("\n Digite a matrícula do professor:");
-                    scanf("%d", matricula);
+                    scanf(" %d", &matricula);
                     webnario.matricula_prof[i] = matricula;
                 }
                 inserir = InserirFinalWebnario(lista_professores, lista_webnarios, webnario.id, webnario.titulo, webnario.url, webnario.dia, webnario.mes, webnario.ano, webnario.hora, webnario.minuto, webnario.qtd_prof, webnario.matricula_prof);
@@ -122,16 +132,22 @@ while (opcao!=6){
         int id, matricula;
         printf("\n -- Acrescentar professor em um webnário -- \n");
         printf("\n Digite o ID do webnário: ");
-        scanf("%d", &id);
+        scanf(" %d", &id);
+        fflush(stdin);
         printf("\n Digite a matrícula do professor: ");
-        scanf("%d", &matricula);
+        scanf(" %d", &matricula);
+        fflush(stdin);
 
         if(BuscarWebnario(lista_webnarios, id) != NULL){
             if(BuscarProfessor(lista_professores, matricula) != NULL){
-                bool incluir = IncluirProfessor(lista_professores, lista_webnarios, BuscarWebnario(lista_webnarios, id), matricula);
+                bool incluir = IncluirProfessor(lista_webnarios, lista_professores, id, matricula);
                 if(!incluir){
                     printf("Webnário com número máximo de professores cadastrados!\n");
                 }
+                else{
+                    printf("Professor incluido com sucesso!\n");
+                }
+                
             }
             else{
                 printf("Matrícula inválida! Não foi possível incluir professor!\n");
@@ -148,15 +164,20 @@ while (opcao!=6){
         int id, matricula;
         printf("\n -- Retirar professor de um webnário -- \n");
         printf("\n Digite o ID do webnário: ");
-        scanf("%d", &id);
+        scanf(" %d", &id);
+        fflush(stdin);
         printf("\n Digite a matrícula do professor: ");
-        scanf("%d", &matricula);
+        scanf(" %d", &matricula);
+        fflush(stdin);
 
         if(BuscarWebnario(lista_webnarios, id) != NULL){
             if(BuscarProfessor(lista_professores, matricula) != NULL){
-                bool retirar = RetirarProfessor(lista_professores, lista_webnarios, BuscarWebnario(lista_webnarios, id), matricula);
+                bool retirar = RetirarProfessor(lista_webnarios, lista_professores, BuscarWebnario(lista_webnarios, id), matricula);
                 if(!retirar){
                     printf("O professor nao esta cadastrado no Webnario!\n");
+                }
+                else{
+                    printf("Professor removido com sucesso!\n");
                 }
             }
             else{
@@ -171,16 +192,19 @@ while (opcao!=6){
 
     case 5:
     {
+        struct webnarioVetor *vetor_webnarios = VetorWebnarios(lista_webnarios);
         MostrarWebnarios(vetor_webnarios, lista_professores);
+        free(vetor_webnarios);
         break;
     }
 
     case 6:
     {
+        AtualizarArquivoProfessores(lista_professores, nome_arquivo_prof);
+        AtualizarArquivoWebnarios(lista_webnarios, nome_arquivo_webnarios);
         printf("\n Atualização dos arquivos realizada. Encerrando o programa!");
         DestruirListaProfessor(lista_professores);
         DestruirListaWebnario(lista_webnarios);
-        free(vetor_webnarios);
         break;
     }
 

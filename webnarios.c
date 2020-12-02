@@ -35,7 +35,7 @@ struct webnarioLista *BuscarWebnario(struct webnarioLista *lista, int id);
 bool InserirFinalWebnario(struct professorLista *lista_prof, struct webnarioLista *lista, int id, char titulo[], char url[], 
                             int dia, int mes, int ano, int hora, int minuto, int qtdProfs, int matriculaProf[]);
 void DesmarcarWebnario(struct webnarioLista *lista_web, struct webnarioLista *webnario);
-bool IncluirProfessor(struct webnarioLista *lista_web, struct professorLista *lista_prof, struct webnarioLista *webnario, int matricula);
+bool IncluirProfessor(struct webnarioLista *lista_web, struct professorLista *lista_prof, int id, int matricula);
 bool RetirarProfessor(struct webnarioLista *lista_web, struct professorLista *lista_prof, struct webnarioLista *webnario, int matricula);
 struct webnarioLista *DestruirListaWebnario(struct webnarioLista *lista);
 
@@ -102,7 +102,7 @@ bool InserirFinalWebnario(struct professorLista *lista_prof, struct webnarioList
     else
     {
         int i;
-        for(i = 0; i < lista->quantidade_professores; i++)
+        for(i = 0; i < qtdProfs; i++)
         {
             if(BuscarProfessor(lista_prof, matriculaProf[i]) == NULL)
             {
@@ -130,28 +130,22 @@ void DesmarcarWebnario(struct webnarioLista *lista_web, struct webnarioLista *we
     }
 }
 
-bool IncluirProfessor(struct webnarioLista *lista_web, struct professorLista *lista_prof, struct webnarioLista *webnario, int matricula)
+bool IncluirProfessor(struct webnarioLista *lista_web, struct professorLista *lista_prof, int id, int matricula)
 {
-    if(BuscarProfessor(lista_prof, matricula) == NULL || BuscarWebnario(lista_web, webnario->id) == NULL)
+    if(BuscarProfessor(lista_prof, matricula) == NULL || BuscarWebnario(lista_web, id) == NULL)
     {
         return false;
     }
-    else if(webnario->quantidade_professores == 3)
+    struct webnarioLista *webnario = BuscarWebnario(lista_web, id);
+    if(webnario->quantidade_professores == 3)
     {
         return false;
     }
     else
     {
-        int i;
-        for(i = 0; i < 3; i++)
-        {
-            if(webnario->matricula_professores[i] == '\0')
-            {
-                webnario->matricula_professores[i] = matricula;
-                webnario->quantidade_professores ++;
-                return true;
-            }
-        }
+        webnario->matricula_professores[webnario->quantidade_professores] = matricula;
+        webnario->quantidade_professores ++;
+        return true;
     }
     return false;
 }
@@ -228,7 +222,7 @@ struct webnarioLista *CopiarArquivoWebnario(struct webnarioLista *lista, char no
     return lista;
 }
 
-void AtualizarArquivoWebnario(struct webnarioLista *lista, char nome_arquivo[])
+void AtualizarArquivoWebnarios(struct webnarioLista *lista, char nome_arquivo[])
 {
     int tamanho_lista = lista->anterior->posicao + 1;
     struct webnarioLista *auxiliar = lista->proximo;

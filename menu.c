@@ -31,6 +31,7 @@ int main(void)
             scanf(" %d", &matricula);
             printf("Digite o nome do professor:\n");
             scanf(" %s", nome);
+            fflush(stdin);
             printf("Digite o departamento do professor:\n");
             scanf(" %s", departamento);
             bool inserir = InserirFinalProfessor(lista_professores, matricula, nome, departamento);
@@ -51,6 +52,7 @@ int main(void)
             scanf(" %d", &id);
             printf("Digite o Titulo do Webnario:\n");
             scanf(" %s", titulo);
+            fflush(stdin);
             printf("Digite o url do Webnario:\nhttp://");
             scanf(" %s", url);
             printf("Digite o ano que sera realizado o Webnario:\n");
@@ -72,7 +74,7 @@ int main(void)
                 for(i = 0; i < qtdProfs; i++)
                 {
                     printf("Digite a matricula do professor 0%d:\n", i + 1);
-                    scanf(" %d", matricula);
+                    scanf(" %d", &matricula);
                     matriculaProf[i] = matricula;
                 }
                 inserir = InserirFinalWebnario(lista_professores, lista_webnarios, id, titulo, url,

@@ -89,7 +89,7 @@ void QuickSort(struct webnarioVetor *vet, int prim, int ult)
 
 void MostrarWebnarios(struct webnarioVetor *vetor, struct professorLista *professores)
 {
-    int tamanho_vetor = sizeof(vetor) -1;
+    int tamanho_vetor = sizeof(vetor);
     QuickSort(vetor, 0, tamanho_vetor - 1);
     printf("\n---------------------------------------\n");
     int i;

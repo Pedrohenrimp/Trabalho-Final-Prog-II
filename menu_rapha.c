@@ -23,6 +23,8 @@ char nome_arquivo_webnarios[] = "webnarios.bin";
 struct webnarioLista *lista_webnarios = CriarListaWebnario();
 lista_webnarios = CopiarArquivoWebnario(lista_webnarios, nome_arquivo_webnarios);
 
+struct webnarioVetor *vetor_webnarios = VetorWebnarios(lista_webnarios);
+
 char universidade[30];
 int opcao=0;
 
@@ -32,7 +34,7 @@ gets (universidade);
 printf("\n------ Bem vindo ao gerenciador de Webnário da  %s ------\n", universidade);
 printf("Selecione a ação desejada de acordo com o menu abaixo: \n");
 
-   while (opcao!=6){
+while (opcao!=6){
    menu:
         printf("\n 1 - Inclusão de professor.");
         printf("\n 2 - Inclusão de webnário.");
@@ -54,7 +56,7 @@ printf("Selecione a ação desejada de acordo com o menu abaixo: \n");
         printf("\n Nome: ");
         scanf("%s", nome);
         printf("\n Matrícula: ");
-        scanf("%d", matricula);
+        scanf("%d", &matricula);
         printf("\n Departamento: ");
         scanf("%s", departamento);
         bool inserir = InserirFinalProfessor(lista_professores, matricula, nome, departamento);
@@ -154,11 +156,11 @@ printf("Selecione a ação desejada de acordo com o menu abaixo: \n");
             if(BuscarProfessor(lista_professores, matricula) != NULL){
                 bool retirar = RetirarProfessor(lista_professores, lista_webnarios, BuscarWebnario(lista_webnarios, id), matricula);
                 if(!retirar){
-                    printf(" Webnário com número máximo de professores cadastrados!\n");
+                    printf("O professor nao esta cadastrado no Webnario!\n");
                 }
             }
             else{
-                printf("Matricula do Professor Invalida! Nao foi possivel Incluir Professor!\n");
+                printf("Matricula do Professor Invalida!\n");
             }
         }
         else{
@@ -169,7 +171,6 @@ printf("Selecione a ação desejada de acordo com o menu abaixo: \n");
 
     case 5:
     {
-        struct webnarioVetor *vetor_webnarios = VetorWebnarios(lista_webnarios);
         MostrarWebnarios(vetor_webnarios, lista_professores);
         break;
     }

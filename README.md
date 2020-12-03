@@ -15,6 +15,6 @@ Raquel Campostrini de Medeiros Mozeika
 
 -------------------------------------------------
 
-Para executra o programa, execute o arquivo "menu.c" em um compilador de C.
+Para executar o programa, abra o arquivo "menu.exe".
 
 Obs.: Para que o programa funcione, todos os arquivos devem estar na mesma pasta.

@@ -23,6 +23,8 @@ char nome_arquivo_webnarios[] = "webnarios.bin";
 struct webnarioLista *lista_webnarios = CriarListaWebnario();
 lista_webnarios = CopiarArquivoWebnario(lista_webnarios, nome_arquivo_webnarios);
 
+struct webnarioVetor *vetor_webnarios = VetorWebnarios(lista_webnarios);
+
 
 char universidade[30];
 int opcao=0;
@@ -192,7 +194,7 @@ while (opcao!=6){
     
     case 5:
     {
-        struct webnarioVetor *vetor_webnarios = VetorWebnarios(lista_webnarios);
+        vetor_webnarios = VetorWebnarios(lista_webnarios);
         MostrarWebnarios(vetor_webnarios, lista_professores, TamanhoLista(lista_webnarios));
         free(vetor_webnarios);
         break;

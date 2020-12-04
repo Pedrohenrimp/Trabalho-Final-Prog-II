@@ -39,7 +39,7 @@ struct webnarioVetor *VetorWebnarios(struct webnarioLista *lista)
         ponteiro[i].qtdProfs = auxiliar->quantidade_professores;
 
         int j;
-        for(j = 0; j < auxiliar->quantidade_professores; j++)
+        for(j = 0; j < ponteiro[i].qtdProfs; j++)
         {    
             ponteiro[i].matriculaProf[j] = auxiliar->matricula_professores[j];    
         }
@@ -113,8 +113,11 @@ void MostrarWebnarios(struct webnarioVetor *vetor, struct professorLista *profes
         int j;
         for(j = 0; j < vetor[i].qtdProfs; j++)
         {
-            struct professorLista *professor = BuscarProfessor(professores, vetor[i].matriculaProf[j]);
-            printf("- %s\n", professor->nome);
+            if(vetor[i].matriculaProf[j] != '\0')
+            {
+                struct professorLista *professor = BuscarProfessor(professores, vetor[i].matriculaProf[j]);
+                printf("- %s\n", professor->nome);
+            }
         }
         printf("\n---------------------------------------\n");
     }

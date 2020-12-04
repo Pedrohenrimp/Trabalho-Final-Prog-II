@@ -170,7 +170,7 @@ bool RetirarProfessor(struct webnarioLista *lista_web, struct professorLista *li
     else
     {
         int i;
-        for(i = 0; i < 3; i++)
+        for(i = 0; i < webnario->quantidade_professores; i++)
         {
             if(webnario->matricula_professores[i] == matricula)
             {
